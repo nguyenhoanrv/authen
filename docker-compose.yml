@@ -17,19 +17,20 @@
 version: '3'
 services:
   api:
+    environment:
+      - PORT:${PORT}
+      - DB_CONNECTION:${DB_CONNECTION}
+      - DB_HOST:${DB_HOST}
+      - DB_USERNAME:${DB_USERNAME}
+      - DB_PASSWORD:${DB_PASSWORD}
+      - DB_DATABASE:${DB_DATABASE}
     build:
       context: .
       dockerfile: Dockerfile
       # args:
       #   - NODE_ENV=development
-    environment:
-      - PORT:3000
-      - DB_HOST=postgres
-      # - DB_PORT:5432
-      - DB_USER:postgres
-      - DB_PW:postgres
     ports:
-      - 3000:3000
+      - ${PORT}:${PORT}
     depends_on:
       - postgres
     links:
@@ -42,8 +43,8 @@ services:
     image: postgres:alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=test1
+      - POSTGRES_USER:${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_HOST_AUTH_METHOD=trust
       - PGDATA=/data/postgres
